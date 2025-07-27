@@ -1,83 +1,682 @@
+
 <!DOCTYPE html>
-<html lang="en" class="bg-gray-900 text-white scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kody T | Portfolio</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kody T - Developer, Game Creator, and Digital Entrepreneur. Portfolio showcasing projects, games, and digital creations.">
+    <title>Kody T | Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-out',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                        'bounce-in': 'bounceIn 0.6s ease-out',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        bounceIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.3)' },
+                            '50%': { opacity: '1', transform: 'scale(1.05)' },
+                            '70%': { transform: 'scale(0.9)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '33%': { transform: 'translateY(-20px) rotate(120deg)' },
+                            '66%': { transform: 'translateY(20px) rotate(240deg)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom styles */
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+        
+        .shape-1 {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .shape-2 {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, #8b5cf6, #ec4899);
+            top: 60%;
+            right: 15%;
+            animation-delay: -7s;
+        }
+        
+        .shape-3 {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ec4899, #ef4444);
+            bottom: 30%;
+            left: 20%;
+            animation-delay: -14s;
+        }
+
+        .nav-link {
+            position: relative;
+            padding-bottom: 2px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .project-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        .skill-progress {
+            height: 8px;
+            background: rgba(31, 41, 55, 0.8);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .filter-btn {
+            color: #9ca3af;
+            background: transparent;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            color: white;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .floating-shape {
+                display: none;
+            }
+        }
+    </style>
 </head>
-<body class="font-sans">
 
-  <!-- Header / Navbar -->
-  <header class="flex justify-between items-center px-6 py-4 bg-gray-800 sticky top-0 z-50 shadow-md">
-    <h1 class="text-xl font-bold">Kody T</h1>
-    <nav class="space-x-6">
-      <a href="#about" class="hover:underline">About</a>
-      <a href="#projects" class="hover:underline">Projects</a>
-      <a href="#store" class="hover:underline">Store</a>
-      <a href="#contact" class="hover:underline">Contact</a>
-    </nav>
-  </header>
-
-  <!-- Hero Section -->
-  <section class="min-h-screen flex flex-col justify-center items-center text-center px-4">
-    <h2 class="text-5xl font-bold">Hi, I'm Kody</h2>
-    <p class="text-xl mt-4 max-w-xl">Developer, Game Creator, and Digital Entrepreneur</p>
-    <div class="flex gap-4 mt-6 flex-wrap justify-center">
-      <a href="https://www.linkedin.com/in/kody-t-83583a346/" target="_blank" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">LinkedIn</a>
-      <a href="https://github.com/HelloSpaghettiBot" target="_blank" class="bg-gray-800 px-4 py-2 rounded hover:bg-gray-700">GitHub</a>
-      <a href="https://tempoutlet.gumroad.com/" target="_blank" class="bg-pink-600 px-4 py-2 rounded hover:bg-pink-700">Digital Store</a>
-      <a href="https://lulssquad.itch.io/" target="_blank" class="bg-red-600 px-4 py-2 rounded hover:bg-red-700">Itch.io</a>
+<body class="font-sans bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-gray-900 z-50 flex items-center justify-center transition-opacity duration-500">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+            <p class="text-xl font-medium text-gray-300">Loading Portfolio...</p>
+        </div>
     </div>
-  </section>
 
-  <!-- About Section -->
-  <section id="about" class="py-20 px-6 max-w-4xl mx-auto text-center">
-    <h2 class="text-3xl font-bold mb-4">About Me</h2>
-    <p class="text-lg text-gray-300">
-      I'm passionate about building unique digital experiences—whether that's a game, a storefront, or an interactive project. I enjoy exploring new tech and sharing creations with others.
-    </p>
-  </section>
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 w-full bg-gray-900/95 backdrop-blur-sm z-40 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                    Kody T
+                </h1>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#about" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">About</a>
+                    <a href="#skills" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Skills</a>
+                    <a href="#projects" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Projects</a>
+                    <a href="#contact" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Contact</a>
+                </nav>
+                <button class="md:hidden text-white focus:outline-none" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            <div class="md:hidden mt-4 hidden" id="mobile-menu">
+                <nav class="flex flex-col space-y-3">
+                    <a href="#about" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">About</a>
+                    <a href="#skills" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Skills</a>
+                    <a href="#projects" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Projects</a>
+                    <a href="#contact" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-  <!-- Projects Section -->
-  <section id="projects" class="py-20 px-6 max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold text-center mb-12">Projects</h2>
-    <div class="grid md:grid-cols-2 gap-8">
-      <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-        <h3 class="text-xl font-semibold">Itch.io Projects</h3>
-        <p class="mt-2 text-gray-300">Games and creative experiences hosted on Itch.io.</p>
-        <a href="https://lulssquad.itch.io/" target="_blank" class="inline-block mt-4 text-indigo-400 hover:underline">View on Itch.io</a>
-      </div>
-      <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-        <h3 class="text-xl font-semibold">GitHub Repositories</h3>
-        <p class="mt-2 text-gray-300">Explore code, projects, and experiments on GitHub.</p>
-        <a href="https://github.com/HelloSpaghettiBot" target="_blank" class="inline-block mt-4 text-indigo-400 hover:underline">View on GitHub</a>
-      </div>
-    </div>
-  </section>
+    <!-- Hero Section -->
+    <section class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden">
+        <!-- Background Animation -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="floating-shape shape-1"></div>
+            <div class="floating-shape shape-2"></div>
+            <div class="floating-shape shape-3"></div>
+        </div>
+        
+        <div class="relative z-10 animate-fade-in">
+            <h2 class="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-slide-up">
+                Hi, I'm Kody
+            </h2>
+            <p class="text-2xl md:text-3xl text-gray-300 mb-8 animate-slide-up" style="animation-delay: 0.2s;">
+                IT Professional, Technical Support Specialist, and Customer Service Expert
+            </p>
+            <div class="flex gap-4 mt-8 flex-wrap justify-center animate-bounce-in" style="animation-delay: 0.4s;">
+                <a href="https://www.linkedin.com/in/kody-t-83583a346/" target="_blank" 
+                   class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                    <i class="fab fa-linkedin mr-2"></i>LinkedIn
+                </a>
+                <a href="https://github.com/HelloSpaghettiBot" target="_blank" 
+                   class="bg-gray-700 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                    <i class="fab fa-github mr-2"></i>GitHub
+                </a>
+                <a href="https://tempoutlet.gumroad.com/" target="_blank" 
+                   class="bg-pink-600 hover:bg-pink-700 px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                    <i class="fas fa-store mr-2"></i>Digital Store
+                </a>
+                <a href="https://lulssquad.itch.io/" target="_blank" 
+                   class="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                    <i class="fas fa-gamepad mr-2"></i>Itch.io
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-2xl text-gray-400"></i>
+        </div>
+    </section>
 
-  <!-- Store Section -->
-  <section id="store" class="py-20 px-6 max-w-4xl mx-auto text-center">
-    <h2 class="text-3xl font-bold mb-6">Digital Store</h2>
-    <p class="text-lg text-gray-300 mb-6">
-      Selling digital tools and assets via Gumroad. Check out what’s available!
-    </p>
-    <a href="https://tempoutlet.gumroad.com/" target="_blank" class="bg-green-600 px-6 py-3 rounded hover:bg-green-700">
-      Visit My Store
-    </a>
-  </section>
+    <!-- About Section -->
+    <section id="about" class="py-20 px-6 max-w-6xl mx-auto">
+        <div class="text-center mb-16 fade-in-section">
+            <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                About Me
+            </h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mb-8"></div>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                I'm an IT professional with extensive experience in customer service and technical support. 
+                I specialize in troubleshooting complex technical issues, managing IT infrastructure, and delivering exceptional customer experiences. 
+                My passion for technology drives me to continuously learn and implement innovative solutions that improve both system performance and user satisfaction.
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8 mt-16">
+            <div class="text-center p-6 bg-gray-800/50 rounded-xl backdrop-blur-sm hover:bg-gray-700/50 transition-all duration-300 transform hover:scale-105 fade-in-section">
+                <div class="text-4xl text-blue-500 mb-4">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">IT Infrastructure</h3>
+                <p class="text-gray-400">Managing servers, networks, and system administration with expertise in troubleshooting and optimization.</p>
+            </div>
+            <div class="text-center p-6 bg-gray-800/50 rounded-xl backdrop-blur-sm hover:bg-gray-700/50 transition-all duration-300 transform hover:scale-105 fade-in-section">
+                <div class="text-4xl text-purple-500 mb-4">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Technical Support</h3>
+                <p class="text-gray-400">Providing exceptional customer service and technical assistance to resolve complex IT issues efficiently.</p>
+            </div>
+            <div class="text-center p-6 bg-gray-800/50 rounded-xl backdrop-blur-sm hover:bg-gray-700/50 transition-all duration-300 transform hover:scale-105 fade-in-section">
+                <div class="text-4xl text-pink-500 mb-4">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Problem Solving</h3>
+                <p class="text-gray-400">Analyzing and resolving technical challenges with innovative solutions and systematic approaches.</p>
+            </div>
+        </div>
+    </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="py-20 px-6 max-w-xl mx-auto text-center">
-    <h2 class="text-3xl font-bold mb-4">Contact</h2>
-    <p class="text-gray-300 mb-4">Want to collaborate or say hello?</p>
-    <a href="mailto:ZeroByteKody@proton.me" class="text-indigo-400 hover:underline">ZeroByteKody@proton.me</a>
-  </section>
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 px-6 bg-gray-800/30">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                    Skills & Experience
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto mb-8"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 fade-in-section text-center">
+                    <div class="text-4xl text-blue-500 mb-6">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4 text-white">Information Technology</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Extensive experience with system administration, network management, troubleshooting hardware and software issues, 
+                        and implementing technology solutions. Proficient in various operating systems, cloud platforms, and IT infrastructure management.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 fade-in-section text-center">
+                    <div class="text-4xl text-purple-500 mb-6">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4 text-white">Customer Service</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Strong background in providing exceptional customer support, resolving complex issues, and maintaining positive client relationships. 
+                        Skilled in communication, problem-solving, and ensuring customer satisfaction across various channels and platforms.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 fade-in-section text-center">
+                    <div class="text-4xl text-pink-500 mb-6">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4 text-white">Management</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Proven leadership abilities in team management, project coordination, and strategic planning. 
+                        Experience in overseeing operations, mentoring team members, and driving organizational goals while fostering collaborative work environments.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-center fade-in-section">
+                <div class="bg-gray-800/30 backdrop-blur-sm rounded-xl p-8 max-w-4xl mx-auto">
+                    <h3 class="text-2xl font-semibold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                        Technical Proficiencies
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6 text-left">
+                        <div>
+                            <h4 class="text-lg font-medium text-white mb-3">Development & Programming</h4>
+                            <p class="text-gray-300">JavaScript, Python, HTML/CSS, React, Node.js, Git, Database Design</p>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-medium text-white mb-3">Tools & Technologies</h4>
+                            <p class="text-gray-300">Game Development, Web Applications, Digital Marketing, E-commerce Platforms</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Footer -->
-  <footer class="bg-gray-800 py-6 text-center text-sm text-gray-400 mt-20">
-    &copy; 2025 Kody T — All rights reserved.
-  </footer>
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 px-6 max-w-6xl mx-auto">
+        <div class="text-center mb-16 fade-in-section">
+            <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+                Featured Projects
+            </h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-green-500 to-blue-500 mx-auto mb-8"></div>
+        </div>
+        
+        <div class="flex justify-center mb-12 fade-in-section">
+            <div class="bg-gray-800/50 rounded-full p-2 backdrop-blur-sm">
+                <button class="filter-btn active px-6 py-2 rounded-full transition-all duration-300" data-filter="all">
+                    All Projects
+                </button>
+                <button class="filter-btn px-6 py-2 rounded-full transition-all duration-300" data-filter="games">
+                    Games
+                </button>
+                <button class="filter-btn px-6 py-2 rounded-full transition-all duration-300" data-filter="software">
+                    Software
+                </button>
+                <button class="filter-btn px-6 py-2 rounded-full transition-all duration-300" data-filter="business">
+                    Business
+                </button>
+            </div>
+        </div>
+        
+        <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Projects will be populated by JavaScript -->
+        </div>
+    </section>
 
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-6 max-w-4xl mx-auto">
+        <div class="text-center mb-16 fade-in-section">
+            <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
+                Get In Touch
+            </h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto mb-8"></div>
+            <p class="text-xl text-gray-300 mb-8">
+                Have a project in mind? Want to collaborate? Let's create something amazing together!
+            </p>
+        </div>
+        
+        <div class="fade-in-section">
+            <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <a href="mailto:ZeroByteKody@proton.me" 
+                   class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 text-center hover:bg-gray-700/50 transition-all duration-300 transform hover:scale-105 group">
+                    <div class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-indigo-500 transition-colors duration-300">
+                        <i class="fas fa-envelope text-white text-xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-lg mb-2">Email Me</h4>
+                    <p class="text-indigo-400 group-hover:text-indigo-300 transition-colors duration-300">
+                        ZeroByteKody@proton.me
+                    </p>
+                </a>
+                
+                <a href="https://www.linkedin.com/in/kody-t-83583a346/" target="_blank" 
+                   class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 text-center hover:bg-gray-700/50 transition-all duration-300 transform hover:scale-105 group">
+                    <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-500 transition-colors duration-300">
+                        <i class="fab fa-linkedin text-white text-xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-lg mb-2">LinkedIn</h4>
+                    <p class="text-purple-400 group-hover:text-purple-300 transition-colors duration-300">
+                        Connect with me
+                    </p>
+                </a>
+                
+                <a href="https://github.com/HelloSpaghettiBot" target="_blank" 
+                   class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 text-center hover:bg-gray-700/50 transition-all duration-300 transform hover:scale-105 group">
+                    <div class="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-gray-500 transition-colors duration-300">
+                        <i class="fab fa-github text-white text-xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-lg mb-2">GitHub</h4>
+                    <p class="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                        View my code
+                    </p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900/80 backdrop-blur-sm py-12 mt-20 border-t border-gray-700/50">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8 text-center md:text-left">
+                <div>
+                    <h3 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-4">
+                        Kody T
+                    </h3>
+                    <p class="text-gray-400">
+                        Creating innovative digital experiences and pushing the boundaries of technology.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Quick Links</h4>
+                    <div class="space-y-2">
+                        <a href="#about" class="block text-gray-400 hover:text-white transition-colors duration-300">About</a>
+                        <a href="#projects" class="block text-gray-400 hover:text-white transition-colors duration-300">Projects</a>
+                        <a href="#contact" class="block text-gray-400 hover:text-white transition-colors duration-300">Contact</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Connect</h4>
+                    <div class="flex justify-center md:justify-start space-x-4">
+                        <a href="https://github.com/HelloSpaghettiBot" target="_blank" 
+                           class="text-gray-400 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/kody-t-83583a346/" target="_blank" 
+                           class="text-gray-400 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="https://lulssquad.itch.io/" target="_blank" 
+                           class="text-gray-400 hover:text-white transition-colors duration-300">
+                            <i class="fas fa-gamepad text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700/50 mt-8 pt-6 text-center text-sm text-gray-400">
+                <p>&copy; 2025 Kody T — All rights reserved. Built with passion and modern web technologies.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        
+
+        const projectsData = [
+            {
+                title: "Game Edit Packet V1",
+                desc: "The proxy operates by accepting incoming client connections on a local port, establishing a corresponding connection with the game server, and then seamlessly forwarding data between the two. Each packet is processed and displayed in a table format, and users can select, inspect, and even modify packet content before reinjecting it into the stream.",
+                pic: "https://img.itch.zone/aW1hZ2UvMzQ0NzQ0MS8yMDU2NzI5Ni5wbmc=/original/5xKeLh.png",
+                url: "https://lulssquad.itch.io/gep-v1",
+                category: "software"
+            },
+            {
+                title: "Controller Mapper",
+                desc: "Controller Mapper is a customizable application that allows you to map Xbox controller buttons to keyboard keys and mouse actions. Whether you're a gamer looking for a specific button layout or need to control your PC with your gamepad, this tool gives you the flexibility to create the perfect mapping for your gaming setup.",
+                pic: "https://img.itch.zone/aW1hZ2UvMzMxMjAxMS8xOTc4MTE1OS5wbmc=/347x500/LbJygT.png",
+                url: "https://lulssquad.itch.io/controller-mapper",
+                category: "software"
+            },
+            {
+                title: "Koza Text Based RPG Engine",
+                desc: "Our Text-Based RPG Adventure is designed with customization in mind, making it incredibly easy for you to tailor the game to your preferences. Whether you're a seasoned developer or new to game customization, our intuitive system ensures a seamless experience.",
+                pic: "https://img.itch.zone/aW1hZ2UvMjc0Mzg5My8xNjM3MzU0Ny5wbmc=/347x500/5S7Wge.png",
+                url: "https://lulssquad.itch.io/text-based-rpg-kozaengine",
+                category: "games"
+            },
+            {
+                title: "Template Outlet",
+                desc: "My e-store for web templates and more. A digital marketplace offering various templates and digital products for developers and designers.",
+                pic: "https://github.com/HelloSpaghettiBot/Portfolio/blob/main/Screenshot%202025-07-26%20175026.png?raw=true",
+                url: "https://tempoutlet.gumroad.com/?_gl=1*6rjgpk*_ga*ODY5NjUyNDcxLjE3NTM1NzM2NDM.*_ga_6LJN6D94N6*czE3NTM1NzczMjIkbzIkZzAkdDE3NTM1NzczMjIkajYwJGwwJGgw",
+                category: "business"
+            }
+        ];
+
+        // Initialize when DOM loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 300);
+                }
+            }, 100);
+            
+            initializeNavigation();
+            populateProjects();
+            initializeProjectFilters();
+            initializeContactForm();
+            initializeScrollAnimations();
+            initializeMobileMenu();
+        });
+
+        function initializeNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        const offsetTop = targetSection.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                        
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        closeMobileMenu();
+                    }
+                });
+            });
+        }
+
+        function initializeMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                    const icon = this.querySelector('i');
+                    if (mobileMenu.classList.contains('hidden')) {
+                        icon.className = 'fas fa-bars text-xl';
+                    } else {
+                        icon.className = 'fas fa-times text-xl';
+                    }
+                });
+            }
+        }
+
+        function closeMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            
+            if (mobileMenu && mobileMenuBtn) {
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.querySelector('i').className = 'fas fa-bars text-xl';
+            }
+        }
+
+        
+
+        function populateProjects() {
+            const container = document.getElementById('projects-grid');
+            
+            if (container) {
+                container.innerHTML = projectsData.map(project => `
+                    <div class="project-card rounded-xl overflow-hidden transition-all duration-300 hover:scale-105" data-category="${project.category}">
+                        <img src="${project.pic}" alt="${project.title}" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold mb-3">${project.title}</h3>
+                            <p class="text-gray-400 mb-4">${project.desc}</p>
+                            <a href="${project.url}" target="_blank" 
+                               class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors duration-300">
+                                View Project <i class="fas fa-external-link-alt ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function initializeProjectFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    projectCards.forEach(card => {
+                        const category = card.getAttribute('data-category');
+                        if (filter === 'all' || category === filter) {
+                            card.style.display = 'block';
+                            card.style.opacity = '1';
+                        } else {
+                            card.style.opacity = '0';
+                            setTimeout(() => {
+                                if (card.style.opacity === '0') {
+                                    card.style.display = 'none';
+                                }
+                            }, 300);
+                        }
+                    });
+                });
+            });
+        }
+
+        function initializeContactForm() {
+            // Contact form removed - using direct contact links instead
+        }
+
+        function initializeScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.fade-in-section').forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('bg-gray-900');
+                    navbar.classList.remove('bg-gray-900/95');
+                } else {
+                    navbar.classList.remove('bg-gray-900');
+                    navbar.classList.add('bg-gray-900/95');
+                }
+            }
+        });
+    </script>
 </body>
 </html>
