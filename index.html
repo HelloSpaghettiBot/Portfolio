@@ -55,13 +55,7 @@
 </head>
 
 <body class="font-sans bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen">
-  <div id="loading-screen" class="fixed inset-0 bg-gray-900 z-50 flex items-center justify-center transition-opacity duration-500">
-    <div class="text-center">
-      <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-      <p class="text-xl font-medium text-gray-300">Loading Portfolio...</p>
-    </div>
-  </div>
-
+  <!-- Header -->
   <header class="fixed top-0 w-full bg-gray-900/95 backdrop-blur-sm z-40 transition-all duration-300" id="navbar">
     <div class="container mx-auto px-6 py-4">
       <div class="flex justify-between items-center">
@@ -89,6 +83,7 @@
     </div>
   </header>
 
+  <!-- Hero -->
   <section class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden">
     <div class="absolute inset-0 overflow-hidden">
       <div class="floating-shape shape-1"></div>
@@ -124,6 +119,7 @@
     </div>
   </section>
 
+  <!-- About -->
   <section id="about" class="py-20 px-6 max-w-6xl mx-auto">
     <div class="text-center mb-16 fade-in-section">
       <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">About Me</h2>
@@ -152,6 +148,7 @@
     </div>
   </section>
 
+  <!-- Skills -->
   <section id="skills" class="py-20 px-6 bg-gray-800/30">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16 fade-in-section">
@@ -187,6 +184,7 @@
     </div>
   </section>
 
+  <!-- Experience -->
   <section id="experience" class="py-20 px-6 max-w-6xl mx-auto">
     <div class="text-center mb-16 fade-in-section">
       <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-blue-500 bg-clip-text text-transparent">Customer Service Experience</h2>
@@ -243,6 +241,7 @@
     </div>
   </section>
 
+  <!-- Projects -->
   <section id="projects" class="py-20 px-6 max-w-6xl mx-auto">
     <div class="text-center mb-16 fade-in-section">
       <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">Featured Projects</h2>
@@ -261,11 +260,10 @@
     <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
   </section>
 
+  <!-- Contact -->
   <section id="contact" class="py-20 px-6 max-w-4xl mx-auto">
     <div class="text-center mb-16 fade-in-section">
       <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">Get In Touch</h2>
-      <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto mb-8"></div>
-      <p class="text-xl text-gray-300 mb-8">Have a project in mind? Want to collaborate? I would love to connect.</p>
     </div>
 
     <div class="fade-in-section">
@@ -297,6 +295,7 @@
     </div>
   </section>
 
+  <!-- Footer -->
   <footer class="bg-gray-900/80 backdrop-blur-sm py-12 mt-20 border-t border-gray-700/50">
     <div class="max-w-6xl mx-auto px-6">
       <div class="grid md:grid-cols-3 gap-8 text-center md:text-left">
@@ -310,4 +309,10 @@
             <a href="#about" class="block text-gray-400 hover:text-white transition-colors duration-300">About</a>
             <a href="#experience" class="block text-gray-400 hover:text-white transition-colors duration-300">Experience</a>
             <a href="#projects" class="block text-gray-400 hover:text-white transition-colors duration-300">Projects</a>
-            <a href="#contact" class="block te
+            <a href="#contact" class="block text-gray-400 hover:text-white transition-colors duration-300">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-semibold text-lg mb-4">Connect</h4>
+          <div class="flex justify-center md:justify-start space-x-4">
+            <a href="https://github.com/HelloSpaghettiBot" target="_blank" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fab fa-github text-xl"></i></a
