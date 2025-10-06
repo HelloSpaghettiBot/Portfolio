@@ -479,191 +479,196 @@
       sections.forEach(s => activeObserver.observe(s));
     });
   </script>
+<script>
+function jsonp(url, cb) {
+  const cbName = 'cb_' + Math.random().toString(36).slice(2);
+  url += (url.includes('?') ? '&' : '?') + 'callback=' + cbName;
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    const t = setTimeout(() => {
+      cleanup(); reject(new Error('JSONP timeout'));
+    }, 12000);
+    function cleanup() {
+      clearTimeout(t);
+      delete window[cbName];
+      s.remove();
+    }
+    window[cbName] = (data) => { cleanup(); resolve(data); };
+    s.src = url;
+    s.onerror = () => { cleanup(); reject(new Error('JSONP network error')); };
+    document.head.appendChild(s);
+  });
+}
+</script>
 
-  <!-- Blog feed (iframe-free) -->
-  <script>
-  (() => {
-    const BLOG_ID = "lockedinreviews.blogspot.com";
-    const FEED_BASE = `https://${BLOG_ID}/feeds/posts/default`;
-    const PAGE_SIZE = 6;
+ <script>
+(() => {
+  const BLOG_ID = "lockedinreviews.blogspot.com";
+  const FEED_BASE = `https://${BLOG_ID}/feeds/posts/default`;
+  const PAGE_SIZE = 6;
 
-    const grid = document.getElementById("blog-grid");
-    const statusEl = document.getElementById("blog-status");
-    const btnMore = document.getElementById("blog-load-more");
-    const searchEl = document.getElementById("blog-search");
-    const clearEl = document.getElementById("blog-clear");
-    const skelTpl = document.getElementById("blog-skeleton");
+  const grid = document.getElementById("blog-grid");
+  const statusEl = document.getElementById("blog-status");
+  const btnMore = document.getElementById("blog-load-more");
+  const searchEl = document.getElementById("blog-search");
+  const clearEl = document.getElementById("blog-clear");
+  const skelTpl = document.getElementById("blog-skeleton");
 
-    let startIndex = 1;       // Blogger is 1-indexed
-    let cache = [];           // loaded posts
-    let loading = false;
-    let reachedEnd = false;
-    let query = "";
+  let startIndex = 1;
+  let cache = [];
+  let loading = false;
+  let reachedEnd = false;
+  let query = "";
 
-    const showStatus = (t) => statusEl.textContent = t || "";
-    const stripHtml = (html) => {
-      const div = document.createElement("div");
-      div.innerHTML = html || "";
-      return (div.textContent || div.innerText || "").trim();
-    };
-    const parseDate = (s) => new Date(s);
-    const fmtDate = (d) => d.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"2-digit" });
+  const showStatus = (t) => statusEl.textContent = t || "";
+  const stripHtml = (html) => {
+    const d = document.createElement("div"); d.innerHTML = html || "";
+    return (d.textContent || d.innerText || "").trim();
+  };
+  const parseDate = (s) => new Date(s);
+  const fmtDate = (d) => d.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"2-digit" });
 
-    const pickThumb = (entry) => {
-      const media = entry["media$thumbnail"]?.url;
-      if (media) return media.replace(/\/s72(\-c)?\//, "/s720/");
-      const html = entry.content?.$t;
-      if (html) {
-        const div = document.createElement("div");
-        div.innerHTML = html;
-        const img = div.querySelector("img");
-        if (img?.src) return img.src;
-      }
-      return "https://picsum.photos/seed/" + encodeURIComponent(entry.id.$t) + "/800/450";
-    };
+  const pickThumb = (entry) => {
+    const media = entry["media$thumbnail"]?.url;
+    if (media) return media.replace(/\/s72(\-c)?\//, "/s720/");
+    const html = entry.content?.$t;
+    if (html) {
+      const div = document.createElement("div"); div.innerHTML = html;
+      const img = div.querySelector("img");
+      if (img?.src) return img.src;
+    }
+    return "https://picsum.photos/seed/" + encodeURIComponent(entry.id.$t) + "/800/450";
+  };
 
-    const postUrl = (entry) => {
-      const alt = entry.link?.find(l => l.rel === "alternate");
-      return alt?.href || "#";
-    };
+  const postUrl = (entry) => {
+    const alt = entry.link?.find(l => l.rel === "alternate");
+    return alt?.href || "#";
+  };
 
-    const excerpt = (entry, len = 160) => {
-      const text = stripHtml(entry.summary?.$t || entry.content?.$t || "");
-      return text.length > len ? text.slice(0, len).trim() + "…" : text;
-    };
+  const excerpt = (entry, len = 160) => {
+    const text = stripHtml(entry.summary?.$t || entry.content?.$t || "");
+    return text.length > len ? text.slice(0, len).trim() + "…" : text;
+  };
 
-    const makeCard = (entry) => {
-      const img = pickThumb(entry);
-      const title = stripHtml(entry.title?.$t || "Untitled");
-      const url = postUrl(entry);
-      const date = fmtDate(parseDate(entry.published?.$t || entry.updated?.$t || Date.now()));
+  const makeCard = (entry) => {
+    const img = pickThumb(entry);
+    const title = stripHtml(entry.title?.$t || "Untitled");
+    const url = postUrl(entry);
+    const date = fmtDate(parseDate(entry.published?.$t || entry.updated?.$t || Date.now()));
+    const el = document.createElement("article");
+    el.className = "project-card rounded-xl overflow-hidden transition-all duration-300 hover:scale-105";
+    el.innerHTML = `
+      <div class="w-full aspect-video overflow-hidden">
+        <img src="${img}" alt="${title}" class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-2">${title}</h3>
+        <div class="text-xs text-gray-400 mb-3">${date}</div>
+        <p class="text-gray-400 mb-4">${excerpt(entry)}</p>
+        <a href="${url}" target="_blank" rel="noopener"
+           class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
+          Read post <i class="fas fa-external-link-alt ml-2"></i>
+        </a>
+      </div>`;
+    return el;
+  };
 
-      const card = document.createElement("article");
-      card.className = "project-card rounded-xl overflow-hidden transition-all duration-300 hover:scale-105";
-      card.innerHTML = `
-        <div class="w-full aspect-video overflow-hidden">
-          <img src="${img}" alt="${title}" class="w-full h-full object-cover" loading="lazy">
-        </div>
-        <div class="p-6">
-          <h3 class="text-xl font-semibold mb-2">${title}</h3>
-          <div class="text-xs text-gray-400 mb-3">${date}</div>
-          <p class="text-gray-400 mb-4">${excerpt(entry)}</p>
-          <a href="${url}" target="_blank" rel="noopener"
-             class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
-            Read post <i class="fas fa-external-link-alt ml-2"></i>
-          </a>
-        </div>`;
-      return card;
-    };
+  const render = () => {
+    grid.innerHTML = "";
+    const list = query
+      ? cache.filter(e => {
+          const t = (e.title?.$t || "").toLowerCase();
+          const body = stripHtml(e.content?.$t || e.summary?.$t || "").toLowerCase();
+          const q = query.toLowerCase();
+          return t.includes(q) || body.includes(q);
+        })
+      : cache;
 
-    const render = () => {
-      grid.innerHTML = "";
-      const list = query
-        ? cache.filter(e => {
-            const t = (e.title?.$t || "").toLowerCase();
-            const body = stripHtml(e.content?.$t || e.summary?.$t || "").toLowerCase();
-            const q = query.toLowerCase();
-            return t.includes(q) || body.includes(q);
-          })
-        : cache;
-
-      if (!list.length) {
-        grid.innerHTML = `<div class="col-span-full text-center text-gray-400">No posts found.</div>`;
-      } else {
-        const frag = document.createDocumentFragment();
-        list.forEach(e => frag.appendChild(makeCard(e)));
-        grid.appendChild(frag);
-      }
-      btnMore.disabled = reachedEnd && !query;
-      showStatus(query ? `Showing ${list.length} result(s)` : "");
-    };
-
-    const showSkeletons = (n = PAGE_SIZE) => {
+    if (!list.length) {
+      grid.innerHTML = `<div class="col-span-full text-center text-gray-400">No posts found.</div>`;
+    } else {
       const frag = document.createDocumentFragment();
-      for (let i = 0; i < n; i++) frag.appendChild(skelTpl.content.cloneNode(true));
+      list.forEach(e => frag.appendChild(makeCard(e)));
       grid.appendChild(frag);
-    };
+    }
+    btnMore.disabled = reachedEnd && !query;
+    showStatus(query ? `Showing ${list.length} result(s)` : "");
+  };
 
-    const fetchPage = async () => {
-      if (loading || reachedEnd) return;
-      loading = true;
-      btnMore.disabled = true;
-      btnMore.setAttribute('aria-busy', 'true');
-      showStatus("Loading…");
-      showSkeletons();
+  const showSkeletons = (n = PAGE_SIZE) => {
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < n; i++) frag.appendChild(skelTpl.content.cloneNode(true));
+    grid.appendChild(frag);
+  };
 
-      try {
-        const url = `${FEED_BASE}?alt=json&max-results=${PAGE_SIZE}&start-index=${startIndex}`;
-        const res = await fetch(url, { mode: "cors", cache: "no-store" });
-        if (!res.ok) throw new Error("Feed error " + res.status);
-        const data = await res.json();
-        const entries = data.feed?.entry || [];
+  // ---- JSONP-powered page load (instead of fetch + CORS) ----
+  async function fetchPage() {
+    if (loading || reachedEnd) return;
+    loading = true;
+    btnMore.disabled = true;
+    btnMore.setAttribute('aria-busy', 'true');
+    showStatus("Loading…");
+    showSkeletons();
 
-        grid.innerHTML = "";
+    try {
+      const url = `${FEED_BASE}?alt=json-in-script&max-results=${PAGE_SIZE}&start-index=${startIndex}`;
+      const data = await jsonp(url);
+      const entries = data.feed?.entry || [];
 
-        if (entries.length === 0) {
-          reachedEnd = true;
-          showStatus("All caught up.");
-        } else {
-          cache = cache.concat(entries);
-          startIndex += entries.length;
-        }
-        render();
-      } catch (err) {
-        console.error(err);
-        grid.innerHTML = `<div class="col-span-full rounded-xl p-6 bg-red-600/10 border border-red-500/40 text-red-300">
-          Failed to load blog posts. You can still visit
-          <a class="underline" href="https://${BLOG_ID}" target="_blank" rel="noopener">the blog</a>.
-        </div>`;
-        showStatus("Error loading feed");
-      } finally {
-        loading = false;
-        btnMore.disabled = reachedEnd;
-        btnMore.removeAttribute('aria-busy');
+      grid.innerHTML = "";
+
+      if (entries.length === 0) {
+        reachedEnd = true;
+        showStatus("All caught up.");
+      } else {
+        cache = cache.concat(entries);
+        startIndex += entries.length;
       }
-    };
-
-    // Search <-> URL sync so back/forward/share works
-    const syncUrl = () => {
-      const base = location.href.split('#')[0];
-      const hash = query ? `#blog?q=${encodeURIComponent(query)}` : '#blog';
-      history.replaceState(null, '', base + hash);
-    };
-    const readUrlQuery = () => {
-      if (location.hash.startsWith('#blog')) {
-        const qs = location.hash.split('?')[1] || '';
-        const q = new URLSearchParams(qs).get('q') || '';
-        if (q) {
-          searchEl.value = q;
-          query = q;
-        }
-      }
-    };
-
-    // Handlers
-    btnMore.addEventListener("click", fetchPage);
-    searchEl.addEventListener("input", (e) => {
-      query = e.target.value || "";
-      syncUrl();
       render();
-    });
-    clearEl.addEventListener("click", () => {
-      query = "";
-      searchEl.value = "";
-      syncUrl();
-      render();
-    });
+    } catch (err) {
+      console.error(err);
+      grid.innerHTML = `<div class="col-span-full rounded-xl p-6 bg-red-600/10 border border-red-500/40 text-red-300">
+        Failed to load blog posts. You can still visit
+        <a class="underline" href="https://${BLOG_ID}" target="_blank" rel="noopener">the blog</a>.
+      </div>`;
+      showStatus("Error loading feed");
+    } finally {
+      loading = false;
+      btnMore.disabled = reachedEnd;
+      btnMore.removeAttribute('aria-busy');
+    }
+  }
 
-    // Auto-load pages when button visible (unless searching)
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting && !query) fetchPage(); });
-    }, { rootMargin: "400px" });
-    io.observe(btnMore);
+  // Search <-> URL sync (unchanged)
+  const syncUrl = () => {
+    const base = location.href.split('#')[0];
+    const hash = query ? `#blog?q=${encodeURIComponent(query)}` : '#blog';
+    history.replaceState(null, '', base + hash);
+  };
+  const readUrlQuery = () => {
+    if (location.hash.startsWith('#blog')) {
+      const qs = location.hash.split('?')[1] || '';
+      const q = new URLSearchParams(qs).get('q') || '';
+      if (q) { searchEl.value = q; query = q; }
+    }
+  };
 
-    // Initial
-    readUrlQuery();
-    fetchPage();
-  })();
-  </script>
+  // Handlers
+  btnMore.addEventListener("click", fetchPage);
+  searchEl.addEventListener("input", (e) => { query = e.target.value || ""; syncUrl(); render(); });
+  clearEl.addEventListener("click", () => { query = ""; searchEl.value = ""; syncUrl(); render(); });
+
+  // Auto-load more when button visible (unless searching)
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting && !query) fetchPage(); });
+  }, { rootMargin: "400px" });
+  io.observe(btnMore);
+
+  // Initial
+  readUrlQuery();
+  fetchPage();
+})();
+</script>
+
 </body>
 </html>
