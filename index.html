@@ -83,6 +83,7 @@
           <a href="#skills" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Skills</a>
           <a href="#experience" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Experience</a>
           <a href="#projects" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Projects</a>
+          <a href="#blog" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Blog</a>
           <a href="#contact" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Contact</a>
         </nav>
         <button class="md:hidden text-white focus:outline-none" id="mobile-menu-btn">
@@ -95,6 +96,7 @@
           <a href="#skills" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Skills</a>
           <a href="#experience" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Experience</a>
           <a href="#projects" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Projects</a>
+          <a href="#blog" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Blog</a>
           <a href="#contact" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Contact</a>
         </nav>
       </div>
@@ -142,7 +144,7 @@
   </section>
 
   <!-- About Section -->
-  <section id="about" class="py-20 px-6 max-w-6xl mx-auto">
+  <section id="about" class="py-20 px-6 max-w-6xl mx-auto scroll-mt-28">
     <div class="text-center mb-16 fade-in-section">
       <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
         About Me
@@ -158,7 +160,7 @@
   </section>
 
   <!-- Skills Section -->
-  <section id="skills" class="py-20 px-6 bg-gray-800/30">
+  <section id="skills" class="py-20 px-6 bg-gray-800/30 scroll-mt-28">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16 fade-in-section">
         <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
@@ -204,7 +206,7 @@
   </section>
 
   <!-- Experience Section -->
-  <section id="experience" class="py-20 px-6 max-w-6xl mx-auto">
+  <section id="experience" class="py-20 px-6 max-w-6xl mx-auto scroll-mt-28">
     <div class="text-center mb-16 fade-in-section">
       <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-blue-500 bg-clip-text text-transparent">
         Customer Service Experience
@@ -263,7 +265,7 @@
   </section>
 
   <!-- Projects Section -->
-  <section id="projects" class="py-20 px-6 max-w-6xl mx-auto">
+  <section id="projects" class="py-20 px-6 max-w-6xl mx-auto scroll-mt-28">
     <div class="text-center mb-16 fade-in-section">
       <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
         Featured Projects
@@ -296,8 +298,61 @@
     </div>
   </section>
 
+  <!-- Blog (native feed, no iframe) -->
+  <section id="blog" class="py-20 px-6 max-w-6xl mx-auto scroll-mt-28">
+    <div class="text-center mb-12">
+      <h2 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+        Latest Posts
+      </h2>
+      <p class="text-gray-400">From LockedInReviews</p>
+    </div>
+
+    <!-- Controls -->
+    <div class="mb-8 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+      <div class="flex items-center gap-2">
+        <input id="blog-search" type="text" placeholder="Search posts..."
+               class="w-full sm:w-80 px-4 py-2 rounded-lg bg-gray-800/60 border border-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500">
+        <button id="blog-clear" class="px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-sm">
+          Clear
+        </button>
+      </div>
+      <div class="text-sm text-gray-400" id="blog-status" aria-live="polite">Loading…</div>
+    </div>
+
+    <!-- Grid -->
+    <div id="blog-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Skeletons -->
+      <template id="blog-skeleton">
+        <div class="rounded-xl overflow-hidden project-card animate-pulse">
+          <div class="w-full h-48 bg-gray-700/50"></div>
+          <div class="p-6 space-y-3">
+            <div class="h-6 bg-gray-700/50 rounded w-3/4"></div>
+            <div class="h-4 bg-gray-700/50 rounded w-full"></div>
+            <div class="h-4 bg-gray-700/50 rounded w-5/6"></div>
+            <div class="h-10 bg-gray-700/50 rounded w-32"></div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <!-- Load more -->
+    <div class="mt-10 text-center">
+      <button id="blog-load-more"
+              class="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+        Load more
+      </button>
+    </div>
+
+    <noscript>
+      <p class="text-center text-gray-400 mt-6">
+        JavaScript is off. View posts on
+        <a class="underline" href="https://lockedinreviews.blogspot.com/" target="_blank" rel="noopener">LockedInReviews</a>.
+      </p>
+    </noscript>
+  </section>
+
   <!-- Contact Section -->
-  <section id="contact" class="py-20 px-6 max-w-4xl mx-auto">
+  <section id="contact" class="py-20 px-6 max-w-4xl mx-auto scroll-mt-28">
     <div class="text-center mb-16 fade-in-section">
       <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
         Get In Touch
@@ -353,6 +408,7 @@
             <a href="#about" class="block text-gray-400 hover:text-white transition-colors duration-300">About</a>
             <a href="#experience" class="block text-gray-400 hover:text-white transition-colors duration-300">Experience</a>
             <a href="#projects" class="block text-gray-400 hover:text-white transition-colors duration-300">Projects</a>
+            <a href="#blog" class="block text-gray-400 hover:text-white transition-colors duration-300">Blog</a>
             <a href="#contact" class="block text-gray-400 hover:text-white transition-colors duration-300">Contact</a>
           </div>
         </div>
@@ -372,67 +428,21 @@
         </div>
       </div>
 
-<!-- Blog (native feed, no iframe) -->
-<section id="blog" class="py-20 px-6 max-w-6xl mx-auto">
-  <div class="text-center mb-12">
-    <h2 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-      Latest Posts
-    </h2>
-    <p class="text-gray-400">From LockedInReviews</p>
-  </div>
-
-  <!-- Controls -->
-  <div class="mb-8 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
-    <div class="flex items-center gap-2">
-      <input id="blog-search" type="text" placeholder="Search posts..."
-             class="w-full sm:w-80 px-4 py-2 rounded-lg bg-gray-800/60 border border-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500">
-      <button id="blog-clear" class="px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-sm">
-        Clear
-      </button>
-    </div>
-    <div class="text-sm text-gray-400" id="blog-status">Loading…</div>
-  </div>
-
-  <!-- Grid -->
-  <div id="blog-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-    <!-- Skeletons -->
-    <template id="blog-skeleton">
-      <div class="rounded-xl overflow-hidden project-card animate-pulse">
-        <div class="w-full h-48 bg-gray-700/50"></div>
-        <div class="p-6 space-y-3">
-          <div class="h-6 bg-gray-700/50 rounded w-3/4"></div>
-          <div class="h-4 bg-gray-700/50 rounded w-full"></div>
-          <div class="h-4 bg-gray-700/50 rounded w-5/6"></div>
-          <div class="h-10 bg-gray-700/50 rounded w-32"></div>
-        </div>
+      <div class="border-t border-gray-700/50 mt-8 pt-6 text-center text-sm text-gray-400">
+        <p>&copy; 2025 Kody T — All rights reserved. Built with passion and modern web technologies.</p>
       </div>
-    </template>
-  </div>
+    </div>
+  </footer>
 
-  <!-- Load more -->
-  <div class="mt-10 text-center">
-    <button id="blog-load-more"
-            class="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
-      Load more
-    </button>
-  </div>
-</section>
-
-
-  <!-- Script to enable animations on scroll -->
+  <!-- Scripts -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Fade-in on scroll
       const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-      const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
+      const fadeObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
       }, observerOptions);
-      document.querySelectorAll('.fade-in-section').forEach(section => {
-        observer.observe(section);
-      });
+      document.querySelectorAll('.fade-in-section').forEach(section => fadeObserver.observe(section));
 
       // mobile nav toggle
       const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -448,179 +458,212 @@
           }
         });
       }
+
+      // Active link syncing (includes #blog)
+      const sections = Array.from(document.querySelectorAll('section[id]'));
+      const links = Array.from(document.querySelectorAll('header nav .nav-link, #mobile-menu .nav-link'));
+      const getLinkFor = (id) => links.find(a => a.getAttribute('href') === `#${id}`);
+
+      const activeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          const link = getLinkFor(e.target.id);
+          if (!link) return;
+          if (e.isIntersecting) {
+            links.forEach(l => l.classList.remove('active'));
+            // highlight both desktop & mobile nav links for this id
+            links.filter(l => l.getAttribute('href') === `#${e.target.id}`).forEach(l => l.classList.add('active'));
+          }
+        });
+      }, { rootMargin: '-40% 0px -50% 0px', threshold: 0.01 });
+
+      sections.forEach(s => activeObserver.observe(s));
     });
   </script>
-<script>
-(() => {
-  const BLOG_ID = "lockedinreviews.blogspot.com";
-  const FEED_BASE = `https://${BLOG_ID}/feeds/posts/default`;
-  const PAGE_SIZE = 6;
 
-  const grid = document.getElementById("blog-grid");
-  const statusEl = document.getElementById("blog-status");
-  const btnMore = document.getElementById("blog-load-more");
-  const searchEl = document.getElementById("blog-search");
-  const clearEl = document.getElementById("blog-clear");
-  const skelTpl = document.getElementById("blog-skeleton");
+  <!-- Blog feed (iframe-free) -->
+  <script>
+  (() => {
+    const BLOG_ID = "lockedinreviews.blogspot.com";
+    const FEED_BASE = `https://${BLOG_ID}/feeds/posts/default`;
+    const PAGE_SIZE = 6;
 
-  let startIndex = 1;       // Blogger is 1-indexed
-  let cache = [];           // simple in-memory cache of loaded posts
-  let loading = false;
-  let reachedEnd = false;
-  let query = "";
+    const grid = document.getElementById("blog-grid");
+    const statusEl = document.getElementById("blog-status");
+    const btnMore = document.getElementById("blog-load-more");
+    const searchEl = document.getElementById("blog-search");
+    const clearEl = document.getElementById("blog-clear");
+    const skelTpl = document.getElementById("blog-skeleton");
 
-  const showStatus = (t) => statusEl.textContent = t || "";
-  const stripHtml = (html) => {
-    const div = document.createElement("div");
-    div.innerHTML = html || "";
-    return (div.textContent || div.innerText || "").trim();
-  };
-  const parseDate = (s) => new Date(s);
-  const fmtDate = (d) => d.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"2-digit" });
+    let startIndex = 1;       // Blogger is 1-indexed
+    let cache = [];           // loaded posts
+    let loading = false;
+    let reachedEnd = false;
+    let query = "";
 
-  const pickThumb = (entry) => {
-    // 1) media$thumbnail (if present)
-    const media = entry["media$thumbnail"]?.url;
-    if (media) return media.replace(/\/s72(\-c)?\//, "/s720/");
-
-    // 2) first <img> in content
-    const html = entry.content?.$t;
-    if (html) {
+    const showStatus = (t) => statusEl.textContent = t || "";
+    const stripHtml = (html) => {
       const div = document.createElement("div");
-      div.innerHTML = html;
-      const img = div.querySelector("img");
-      if (img?.src) return img.src;
-    }
-    // 3) fallback
-    return "https://picsum.photos/seed/" + encodeURIComponent(entry.id.$t) + "/800/450";
-  };
+      div.innerHTML = html || "";
+      return (div.textContent || div.innerText || "").trim();
+    };
+    const parseDate = (s) => new Date(s);
+    const fmtDate = (d) => d.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"2-digit" });
 
-  const postUrl = (entry) => {
-    const alt = entry.link?.find(l => l.rel === "alternate");
-    return alt?.href || "#";
-  };
-
-  const excerpt = (entry, len = 160) => {
-    const text = stripHtml(entry.summary?.$t || entry.content?.$t || "");
-    return text.length > len ? text.slice(0, len).trim() + "…" : text;
-  };
-
-  const makeCard = (entry) => {
-    const img = pickThumb(entry);
-    const title = stripHtml(entry.title?.$t || "Untitled");
-    const url = postUrl(entry);
-    const date = fmtDate(parseDate(entry.published?.$t || entry.updated?.$t || Date.now()));
-
-    const card = document.createElement("article");
-    card.className = "project-card rounded-xl overflow-hidden transition-all duration-300 hover:scale-105";
-    card.innerHTML = `
-      <img src="${img}" alt="${title}" class="w-full h-48 object-cover">
-      <div class="p-6">
-        <h3 class="text-xl font-semibold mb-2 line-clamp-2">${title}</h3>
-        <div class="text-xs text-gray-400 mb-3">${date}</div>
-        <p class="text-gray-400 mb-4 line-clamp-3">${excerpt(entry)}</p>
-        <a href="${url}" target="_blank" rel="noopener"
-           class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
-          Read post <i class="fas fa-external-link-alt ml-2"></i>
-        </a>
-      </div>`;
-    return card;
-  };
-
-  const render = () => {
-    grid.innerHTML = "";
-    const list = query
-      ? cache.filter(e => {
-          const t = (e.title?.$t || "").toLowerCase();
-          const body = stripHtml(e.content?.$t || e.summary?.$t || "").toLowerCase();
-          const q = query.toLowerCase();
-          return t.includes(q) || body.includes(q);
-        })
-      : cache;
-
-    if (!list.length) {
-      grid.innerHTML = `<div class="col-span-full text-center text-gray-400">No posts found.</div>`;
-    } else {
-      const frag = document.createDocumentFragment();
-      list.forEach(e => frag.appendChild(makeCard(e)));
-      grid.appendChild(frag);
-    }
-    btnMore.disabled = reachedEnd && !query; // allow search anytime
-    showStatus(query ? `Showing ${list.length} result(s)` : "");
-  };
-
-  const showSkeletons = (n = PAGE_SIZE) => {
-    const frag = document.createDocumentFragment();
-    for (let i = 0; i < n; i++) {
-      frag.appendChild(skelTpl.content.cloneNode(true));
-    }
-    grid.appendChild(frag);
-  };
-
-  const fetchPage = async () => {
-    if (loading || reachedEnd) return;
-    loading = true;
-    btnMore.disabled = true;
-    showStatus("Loading…");
-    showSkeletons();
-
-    try {
-      // Blogger JSON feed supports CORS with alt=json
-      const url = `${FEED_BASE}?alt=json&max-results=${PAGE_SIZE}&start-index=${startIndex}`;
-      const res = await fetch(url, { mode: "cors", cache: "no-store" });
-      if (!res.ok) throw new Error("Feed error " + res.status);
-      const data = await res.json();
-      const entries = data.feed?.entry || [];
-
-      // remove skeletons
-      grid.innerHTML = "";
-
-      if (entries.length === 0) {
-        reachedEnd = true;
-        showStatus("All caught up.");
-      } else {
-        cache = cache.concat(entries);
-        startIndex += entries.length;
+    const pickThumb = (entry) => {
+      const media = entry["media$thumbnail"]?.url;
+      if (media) return media.replace(/\/s72(\-c)?\//, "/s720/");
+      const html = entry.content?.$t;
+      if (html) {
+        const div = document.createElement("div");
+        div.innerHTML = html;
+        const img = div.querySelector("img");
+        if (img?.src) return img.src;
       }
+      return "https://picsum.photos/seed/" + encodeURIComponent(entry.id.$t) + "/800/450";
+    };
+
+    const postUrl = (entry) => {
+      const alt = entry.link?.find(l => l.rel === "alternate");
+      return alt?.href || "#";
+    };
+
+    const excerpt = (entry, len = 160) => {
+      const text = stripHtml(entry.summary?.$t || entry.content?.$t || "");
+      return text.length > len ? text.slice(0, len).trim() + "…" : text;
+    };
+
+    const makeCard = (entry) => {
+      const img = pickThumb(entry);
+      const title = stripHtml(entry.title?.$t || "Untitled");
+      const url = postUrl(entry);
+      const date = fmtDate(parseDate(entry.published?.$t || entry.updated?.$t || Date.now()));
+
+      const card = document.createElement("article");
+      card.className = "project-card rounded-xl overflow-hidden transition-all duration-300 hover:scale-105";
+      card.innerHTML = `
+        <div class="w-full aspect-video overflow-hidden">
+          <img src="${img}" alt="${title}" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-semibold mb-2">${title}</h3>
+          <div class="text-xs text-gray-400 mb-3">${date}</div>
+          <p class="text-gray-400 mb-4">${excerpt(entry)}</p>
+          <a href="${url}" target="_blank" rel="noopener"
+             class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
+            Read post <i class="fas fa-external-link-alt ml-2"></i>
+          </a>
+        </div>`;
+      return card;
+    };
+
+    const render = () => {
+      grid.innerHTML = "";
+      const list = query
+        ? cache.filter(e => {
+            const t = (e.title?.$t || "").toLowerCase();
+            const body = stripHtml(e.content?.$t || e.summary?.$t || "").toLowerCase();
+            const q = query.toLowerCase();
+            return t.includes(q) || body.includes(q);
+          })
+        : cache;
+
+      if (!list.length) {
+        grid.innerHTML = `<div class="col-span-full text-center text-gray-400">No posts found.</div>`;
+      } else {
+        const frag = document.createDocumentFragment();
+        list.forEach(e => frag.appendChild(makeCard(e)));
+        grid.appendChild(frag);
+      }
+      btnMore.disabled = reachedEnd && !query;
+      showStatus(query ? `Showing ${list.length} result(s)` : "");
+    };
+
+    const showSkeletons = (n = PAGE_SIZE) => {
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < n; i++) frag.appendChild(skelTpl.content.cloneNode(true));
+      grid.appendChild(frag);
+    };
+
+    const fetchPage = async () => {
+      if (loading || reachedEnd) return;
+      loading = true;
+      btnMore.disabled = true;
+      btnMore.setAttribute('aria-busy', 'true');
+      showStatus("Loading…");
+      showSkeletons();
+
+      try {
+        const url = `${FEED_BASE}?alt=json&max-results=${PAGE_SIZE}&start-index=${startIndex}`;
+        const res = await fetch(url, { mode: "cors", cache: "no-store" });
+        if (!res.ok) throw new Error("Feed error " + res.status);
+        const data = await res.json();
+        const entries = data.feed?.entry || [];
+
+        grid.innerHTML = "";
+
+        if (entries.length === 0) {
+          reachedEnd = true;
+          showStatus("All caught up.");
+        } else {
+          cache = cache.concat(entries);
+          startIndex += entries.length;
+        }
+        render();
+      } catch (err) {
+        console.error(err);
+        grid.innerHTML = `<div class="col-span-full rounded-xl p-6 bg-red-600/10 border border-red-500/40 text-red-300">
+          Failed to load blog posts. You can still visit
+          <a class="underline" href="https://${BLOG_ID}" target="_blank" rel="noopener">the blog</a>.
+        </div>`;
+        showStatus("Error loading feed");
+      } finally {
+        loading = false;
+        btnMore.disabled = reachedEnd;
+        btnMore.removeAttribute('aria-busy');
+      }
+    };
+
+    // Search <-> URL sync so back/forward/share works
+    const syncUrl = () => {
+      const base = location.href.split('#')[0];
+      const hash = query ? `#blog?q=${encodeURIComponent(query)}` : '#blog';
+      history.replaceState(null, '', base + hash);
+    };
+    const readUrlQuery = () => {
+      if (location.hash.startsWith('#blog')) {
+        const qs = location.hash.split('?')[1] || '';
+        const q = new URLSearchParams(qs).get('q') || '';
+        if (q) {
+          searchEl.value = q;
+          query = q;
+        }
+      }
+    };
+
+    // Handlers
+    btnMore.addEventListener("click", fetchPage);
+    searchEl.addEventListener("input", (e) => {
+      query = e.target.value || "";
+      syncUrl();
       render();
-    } catch (err) {
-      console.error(err);
-      grid.innerHTML = `<div class="col-span-full rounded-xl p-6 bg-red-600/10 border border-red-500/40 text-red-300">
-        Failed to load blog posts. You can still visit
-        <a class="underline" href="https://${BLOG_ID}" target="_blank" rel="noopener">the blog</a>.
-      </div>`;
-      showStatus("Error loading feed");
-    } finally {
-      loading = false;
-      btnMore.disabled = reachedEnd;
-    }
-  };
-
-  // Handlers
-  btnMore.addEventListener("click", fetchPage);
-  searchEl.addEventListener("input", (e) => {
-    query = e.target.value || "";
-    render();
-  });
-  clearEl.addEventListener("click", () => {
-    query = "";
-    searchEl.value = "";
-    render();
-  });
-
-  // Optional: IntersectionObserver to auto-load when button becomes visible
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting && !query) fetchPage();
     });
-  }, { rootMargin: "400px" });
-  io.observe(btnMore);
+    clearEl.addEventListener("click", () => {
+      query = "";
+      searchEl.value = "";
+      syncUrl();
+      render();
+    });
 
-  // Initial load
-  fetchPage();
-})();
-</script>
+    // Auto-load pages when button visible (unless searching)
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting && !query) fetchPage(); });
+    }, { rootMargin: "400px" });
+    io.observe(btnMore);
 
-      
+    // Initial
+    readUrlQuery();
+    fetchPage();
+  })();
+  </script>
 </body>
 </html>
