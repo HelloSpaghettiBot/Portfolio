@@ -1,0 +1,25 @@
+name: Update Gumroad Products (API)
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch products from Gumroad API
+        run: |
+          curl -s "https://api.gumroad.com/v2/products?access_token=${{ secrets.GUMROAD_ACCESS_TOKEN }}"           | jq '.products | map({title: .name, url: .short_url, image: .preview_url})' > products.json
+
+      - name: Commit updated products.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add products.json
+          git commit -m "Auto-update Gumroad products.json" || echo "No changes"
+          git push
