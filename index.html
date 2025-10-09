@@ -1,90 +1,293 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Digital Outlet — Templates, Reviews & Tools</title>
-  <meta name="description" content="Digital Outlet — A hub for templates, programs, and tech reviews. Discover digital tools, game projects, and insightful articles updated daily.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Digital Outlet — Buy templates, read reviews, and download useful programs.">
+  <title>Digital Outlet — Templates, Reviews, Programs</title>
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <style>
+    .nav-link{position:relative;padding-bottom:2px}
+    .nav-link::after{content:'';position:absolute;left:0;bottom:0;height:2px;width:0;background:linear-gradient(90deg,#3b82f6,#8b5cf6);transition:width .3s}
+    .nav-link:hover::after,.nav-link.active::after{width:100%}
+    .card{transition:transform .25s ease, box-shadow .25s ease; background:rgba(31,41,55,.5); border:1px solid rgba(75,85,99,.35); backdrop-filter: blur(10px);}
+    .card:hover{transform:translateY(-6px); box-shadow:0 14px 28px rgba(0,0,0,.35); border-color: rgba(59,130,246,.5);}
+    .clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    body{background:linear-gradient(to bottom right,#0f172a,#1e293b,#000);color:white;}
+  </style>
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white font-sans overflow-x-hidden">
+
+<body class="font-sans min-h-screen">
 
   <!-- Header -->
-  <header id="navbar" class="fixed top-0 left-0 w-full z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-700/50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Digital Outlet</h1>
-      <nav class="hidden md:flex space-x-8">
-        <a href="#welcome" class="nav-link">Home</a>
-        <a href="#outlet" class="nav-link">Digital Outlet</a>
-        <a href="#blog" class="nav-link">Blog</a>
-        <a href="https://hellospaghettibot.github.io/homepage/portfolio1.html" target="_blank" class="nav-link">Portfolio</a>
-        <a href="#contact" class="nav-link">Contact</a>
-        <a href="#about" class="nav-link">About</a>
+  <header class="fixed top-0 w-full bg-gray-900/95 backdrop-blur-sm z-40">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#welcome" class="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Digital Outlet</a>
+      <nav class="hidden md:flex gap-8">
+        <a href="#welcome" class="nav-link text-gray-300 hover:text-white">Welcome</a>
+        <a href="#outlet" class="nav-link text-gray-300 hover:text-white">Digital Outlet</a>
+        <a href="#blog" class="nav-link text-gray-300 hover:text-white">Blog</a>
+        <a href="#contact" class="nav-link text-gray-300 hover:text-white">Contact</a>
+        <a href="#about" class="nav-link text-gray-300 hover:text-white">About</a>
       </nav>
-      <button id="mobile-menu-btn" class="md:hidden text-white"><i class="fas fa-bars text-xl"></i></button>
+      <button id="mobile-btn" class="md:hidden text-white"><i class="fas fa-bars text-xl"></i></button>
     </div>
-    <div id="mobile-menu" class="hidden flex-col bg-gray-900/95 md:hidden px-6 py-4 space-y-3">
-      <a href="#welcome" class="nav-link">Home</a>
-      <a href="#outlet" class="nav-link">Digital Outlet</a>
-      <a href="#blog" class="nav-link">Blog</a>
-      <a href="https://hellospaghettibot.github.io/homepage/portfolio1.html" target="_blank" class="nav-link">Portfolio</a>
-      <a href="#contact" class="nav-link">Contact</a>
-      <a href="#about" class="nav-link">About</a>
+    <div id="mobile-menu" class="md:hidden hidden px-6 pb-4">
+      <nav class="flex flex-col gap-3">
+        <a href="#welcome" class="nav-link text-gray-300 hover:text-white">Welcome</a>
+        <a href="#outlet" class="nav-link text-gray-300 hover:text-white">Digital Outlet</a>
+        <a href="#blog" class="nav-link text-gray-300 hover:text-white">Blog</a>
+        <a href="#contact" class="nav-link text-gray-300 hover:text-white">Contact</a>
+        <a href="#about" class="nav-link text-gray-300 hover:text-white">About</a>
+      </nav>
     </div>
   </header>
 
-  <!-- Floating Shapes -->
-  <div class="floating-shape shape-1"></div>
-  <div class="floating-shape shape-2"></div>
-  <div class="floating-shape shape-3"></div>
-
-  <!-- Welcome Section -->
-  <section id="welcome" class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
-    <h2 class="text-6xl md:text-7xl font-extrabold mb-6 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-      Templates, Reviews & Useful Programs
-    </h2>
-    <p class="text-2xl md:text-3xl text-gray-300 max-w-3xl mx-auto">Explore digital tools, templates, and insights that empower creators and gamers alike.</p>
-  </section>
-
-  <!-- Digital Outlet -->
-  <section id="outlet" class="py-20 px-6 max-w-7xl mx-auto">
-    <div class="text-center mb-16">
-      <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">Digital Outlet</h2>
-      <p class="text-gray-400">Pulled live from Gumroad — discover fresh tools daily.</p>
+  <!-- Welcome -->
+  <section id="welcome" class="min-h-screen scroll-mt-28 grid place-items-center text-center px-6">
+    <div class="animate-fade-in">
+      <h1 class="text-5xl md:text-7xl font-extrabold mb-6 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+        Templates, Reviews & Useful Programs
+      </h1>
+      <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">Clean templates, practical tools, and honest game & tech reviews.</p>
+      <div class="mt-8 flex gap-3 flex-wrap justify-center">
+        <a href="#outlet" class="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 transition">Browse the Outlet</a>
+        <a href="#blog" class="px-6 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition">Read the Blog</a>
+      </div>
     </div>
-    <div id="products-grid" class="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
   </section>
 
-  <!-- Blog Section -->
-  <section id="blog" class="py-20 px-6 max-w-6xl mx-auto">
-    <div class="text-center mb-16">
-      <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Latest Reviews</h2>
+  <!-- DIGITAL OUTLET -->
+  <section id="outlet" class="py-20 px-6 max-w-7xl mx-auto scroll-mt-28">
+    <div class="text-center mb-10">
+      <h2 class="text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">Digital Outlet</h2>
+      <p class="text-gray-400">Perfectly square cards. Opens Gumroad overlay without leaving the page.</p>
     </div>
-    <div id="blog-grid" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
+
+    <!-- Search -->
+    <div class="mb-8 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+      <div class="flex items-center gap-2 w-full">
+        <input id="outlet-search" type="text" placeholder="Search products..." class="w-full sm:w-96 px-4 py-2 rounded-lg bg-gray-800/60 border border-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button id="outlet-clear" class="px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-sm">Clear</button>
+      </div>
+      <div id="outlet-status" class="text-sm text-gray-400" aria-live="polite"></div>
+    </div>
+
+    <div id="outlet-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
   </section>
 
-  <!-- Contact -->
-  <section id="contact" class="py-20 px-6 max-w-5xl mx-auto text-center">
-    <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">Contact</h2>
-    <p class="text-gray-400 mb-6">Have questions or want to collaborate? Reach out anytime.</p>
-    <p><a href="mailto:ZeroByteKody@proton.me" class="text-blue-400 hover:underline">ZeroByteKody@proton.me</a></p>
+  <!-- BLOG -->
+  <section id="blog" class="py-20 px-6 max-w-7xl mx-auto scroll-mt-28">
+    <div class="text-center mb-10">
+      <h2 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Blog</h2>
+      <p class="text-gray-400">Opens posts right on this page.</p>
+    </div>
+
+    <div class="mb-8 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+      <div class="flex items-center gap-2">
+        <input id="blog-search" type="text" placeholder="Search posts..." class="w-full sm:w-80 px-4 py-2 rounded-lg bg-gray-800/60 border border-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500">
+        <button id="blog-clear" class="px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-sm">Clear</button>
+      </div>
+      <div id="blog-status" class="text-sm text-gray-400" aria-live="polite">Loading…</div>
+    </div>
+
+    <div id="blog-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    <div id="blog-detail" class="hidden max-w-3xl mx-auto mt-12 bg-gray-800/50 backdrop-blur-sm rounded-xl p-6">
+      <div class="flex items-center justify-between mb-6">
+        <button id="blog-back" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded">&larr; Back</button>
+        <a id="blog-open-original" href="#" target="_blank" class="text-blue-400 hover:text-blue-300 text-sm">Open on Blogger <i class="fas fa-external-link-alt ml-1"></i></a>
+      </div>
+      <div id="blog-detail-content" class="prose prose-invert max-w-none"></div>
+    </div>
   </section>
 
-  <!-- About -->
-  <section id="about" class="py-20 px-6 max-w-5xl mx-auto text-center">
-    <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">About</h2>
-    <p class="text-gray-400 leading-relaxed max-w-3xl mx-auto">
-      Digital Outlet was founded by Kody (Koza) to bring creators, gamers, and developers together through helpful programs, web templates, and tech reviews — all crafted for real-world impact.
+  <!-- CONTACT -->
+  <section id="contact" class="py-20 px-6 max-w-5xl mx-auto scroll-mt-28">
+    <div class="text-center mb-10">
+      <h2 class="text-5xl font-bold mb-4 bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">Contact</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <a href="mailto:ZeroByteKody@proton.me" class="card rounded-xl p-8 text-center hover:scale-[1.02]">
+        <div class="w-16 h-16 bg-indigo-600 rounded-full mx-auto flex items-center justify-center mb-4">
+          <i class="fas fa-envelope text-white text-xl"></i>
+        </div>
+        <h4 class="font-semibold text-lg mb-2">Email</h4>
+        <p class="text-indigo-300">ZeroByteKody@proton.me</p>
+      </a>
+      <a href="https://github.com/HelloSpaghettiBot" target="_blank" class="card rounded-xl p-8 text-center hover:scale-[1.02]">
+        <div class="w-16 h-16 bg-gray-600 rounded-full mx-auto flex items-center justify-center mb-4">
+          <i class="fab fa-github text-white text-xl"></i>
+        </div>
+        <h4 class="font-semibold text-lg mb-2">GitHub</h4>
+        <p class="text-gray-300">Code & projects</p>
+      </a>
+      <a href="https://www.linkedin.com/in/kody-tryon-789445387" target="_blank" class="card rounded-xl p-8 text-center hover:scale-[1.02]">
+        <div class="w-16 h-16 bg-blue-700 rounded-full mx-auto flex items-center justify-center mb-4">
+          <i class="fab fa-linkedin text-white text-xl"></i>
+        </div>
+        <h4 class="font-semibold text-lg mb-2">LinkedIn</h4>
+        <p class="text-gray-300">Connect professionally</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="py-20 px-6 max-w-6xl mx-auto scroll-mt-28 text-center">
+    <h2 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">About Digital Outlet</h2>
+    <p class="text-gray-400 max-w-3xl mx-auto">
+      Built by Kody (Koza). Digital Outlet curates practical tools, clean templates, and honest reviews — helping creators and gamers ship faster.
     </p>
   </section>
 
-  <footer class="text-center py-8 border-t border-gray-700/40 text-gray-400 text-sm">
-    <p>&copy; 2025 Digital Outlet. Built with passion and precision.</p>
-  </footer>
+  <!-- Gumroad overlay -->
+  <script src="https://gumroad.com/js/gumroad.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-  <script src="script.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // ---- MOBILE MENU ----
+    const mb = document.getElementById('mobile-btn');
+    const mm = document.getElementById('mobile-menu');
+    mb.addEventListener('click', () => {
+      mm.classList.toggle('hidden');
+      mb.querySelector('i').className = mm.classList.contains('hidden') ? 'fas fa-bars text-xl' : 'fas fa-times text-xl';
+    });
+
+    // =========================
+    // OUTLET — LOAD FROM products.json (auto-generated by GitHub Action)
+    // =========================
+    const grid   = document.getElementById("outlet-grid");
+    const search = document.getElementById("outlet-search");
+    const clear  = document.getElementById("outlet-clear");
+    const status = document.getElementById("outlet-status");
+
+    // Fallback list so page stays usable before first API run
+    const FALLBACK = [
+      { title: "Gamers Guild Site", url: "https://tempoutlet.gumroad.com/l/usaqec", image: "https://public-files.gumroad.com/ftk91xbmsselmag5qd1fdly7my9j" },
+      { title: "Fashion Store Front Single Page", url: "https://tempoutlet.gumroad.com/l/nqxcg", image: "https://public-files.gumroad.com/rfg326moguus8j5u9l89i4vw7l59" },
+      { title: "Game Template", url: "https://tempoutlet.gumroad.com/l/gametemp", image: "https://public-files.gumroad.com/j8ivpugglnktziu43iiiltrwmese" },
+      { title: "Blog Template", url: "https://tempoutlet.gumroad.com/l/blog", image: "https://public-files.gumroad.com/rntdbn5n2tvjlzinbo752fdpbs7h" },
+      { title: "Simple Blue & White Template", url: "https://tempoutlet.gumroad.com/l/community", image: "https://public-files.gumroad.com/lbhu3zgvb14espwuq5ep5iadl8lz" },
+      { title: "Photography Portfolio", url: "https://tempoutlet.gumroad.com/l/photoport", image: "https://public-files.gumroad.com/ebozdb4j5yoinw22h2lwcuwdhnf1" },
+      { title: "Cleaning Website Template", url: "https://tempoutlet.gumroad.com/l/cleaning", image: "https://public-files.gumroad.com/xrj33pgw2y8b1g33q0x6l2bvmr6x" }
+    ];
+
+    let PRODUCTS = [];
+
+    function render(list){
+      grid.innerHTML = "";
+      if (!list.length){
+        status.textContent = "No products found.";
+        return;
+      }
+      grid.innerHTML = list.map(p => `
+        <article class="card rounded-xl overflow-hidden">
+          <div class="aspect-square relative overflow-hidden">
+            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover" loading="lazy">
+            <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition grid place-items-center">
+              <a href="${p.url}" class="gumroad-button px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700">View & Buy</a>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold clamp-2">${p.title}</h3>
+          </div>
+        </article>
+      `).join("");
+      status.textContent = list.length + " product(s)";
+    }
+
+    function applySearch(){
+      const q = (search.value || "").toLowerCase().trim();
+      if (!q) { render(PRODUCTS); return; }
+      render(PRODUCTS.filter(p => p.title.toLowerCase().includes(q)));
+    }
+
+    search.addEventListener("input", applySearch);
+    clear.addEventListener("click", () => { search.value = ""; applySearch(); });
+
+    // Load the auto-generated list
+    fetch("products.json", { cache: "no-store" })
+      .then(r => r.ok ? r.json() : Promise.reject(new Error("No products.json")))
+      .then(items => {
+        // Normalize + dedupe
+        const seen = new Set();
+        PRODUCTS = items.map(p => ({
+          title: p.title || "Untitled",
+          url:   p.url   || "#",
+          image: p.image || "https://picsum.photos/seed/" + encodeURIComponent(p.title||"x") + "/800/800"
+        })).filter(p => {
+          const key = (p.url||"") + "|" + (p.title||"");
+          if (seen.has(key)) return false; seen.add(key); return true;
+        });
+
+        if (!PRODUCTS.length) PRODUCTS = FALLBACK;
+        render(PRODUCTS);
+      })
+      .catch(() => { PRODUCTS = FALLBACK; render(PRODUCTS); });
+
+    // =========================
+    // BLOG — JSONP (works on static hosts)
+    // =========================
+    const blogFeed = "https://lockedinreviews.blogspot.com/feeds/posts/default?alt=json-in-script";
+    const blogGrid = document.getElementById("blog-grid");
+    const blogDetail = document.getElementById("blog-detail");
+    const blogBack = document.getElementById("blog-back");
+    const blogDetailContent = document.getElementById("blog-detail-content");
+    const blogStatus = document.getElementById("blog-status");
+
+    function jsonp(url){
+      return new Promise((resolve,reject)=>{
+        const cb="cb_"+Math.random().toString(36).substr(2);
+        window[cb]=d=>{delete window[cb];document.body.removeChild(s);resolve(d)};
+        const s=document.createElement("script");
+        s.src=url+(url.includes("?")?"&":"?")+"callback="+cb;
+        s.onerror=()=>reject();
+        document.body.appendChild(s);
+      });
+    }
+    const strip = (html)=>{ const div=document.createElement("div"); div.innerHTML=html||""; return div.textContent||""; };
+
+    function makeCard(entry){
+      const title = entry.title.$t;
+      const url = entry.link.find(l=>l.rel==='alternate').href;
+      const img = (entry.media$thumbnail && entry.media$thumbnail.url)||"https://picsum.photos/300?random="+Math.random();
+      const p = strip(entry.summary?.$t||entry.content?.$t||"").slice(0,120);
+      const el = document.createElement("article");
+      el.className="card rounded-xl overflow-hidden cursor-pointer";
+      el.innerHTML = `
+        <div class="w-full aspect-square overflow-hidden">
+          <img src="${img}" alt="${title}" class="w-full h-full object-cover">
+        </div>
+        <div class="p-4">
+          <h3 class="text-lg font-semibold clamp-2">${title}</h3>
+          <p class="text-gray-400 clamp-2">${p}</p>
+        </div>`;
+      el.addEventListener("click",()=>{
+        blogGrid.classList.add("hidden");
+        blogDetail.classList.remove("hidden");
+        blogDetailContent.innerHTML = `<h2 class="text-3xl font-bold mb-4">${title}</h2>${entry.content.$t}`;
+        document.getElementById("blog-open-original").href = url;
+      });
+      blogGrid.appendChild(el);
+    }
+
+    jsonp(blogFeed).then(data=>{
+      const entries=data.feed?.entry||[];
+      if(!entries.length){blogStatus.textContent="No posts found.";return;}
+      entries.forEach(makeCard);
+      blogStatus.textContent="";
+    }).catch(()=>{
+      blogStatus.textContent="Failed to load posts.";
+    });
+
+    blogBack.addEventListener("click",()=>{
+      blogDetail.classList.add("hidden");
+      blogGrid.classList.remove("hidden");
+    });
+  });
+  </script>
 </body>
 </html>
