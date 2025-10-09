@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Outlet — Templates, Reviews, and Tools</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    .nav-link{position:relative;padding-bottom:2px}
+    .nav-link::after{content:'';position:absolute;left:0;bottom:0;height:2px;width:0;background:linear-gradient(90deg,#3b82f6,#8b5cf6);transition:width .3s}
+    .nav-link:hover::after,.nav-link.active::after{width:100%}
+    .card{transition:transform .25s ease,box-shadow .25s ease;background:rgba(31,41,55,.5);border:1px solid rgba(75,85,99,.35);backdrop-filter:blur(10px);}
+    .card:hover{transform:translateY(-6px);box-shadow:0 14px 28px rgba(0,0,0,.35);border-color:rgba(59,130,246,.5);}
+    .clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    body{background:linear-gradient(to bottom right,#0f172a,#1e293b,#000);color:white;}
+  </style>
+</head>
+<body class="font-sans min-h-screen">
+
+<header class="fixed top-0 w-full bg-gray-900/95 backdrop-blur-sm z-40">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#welcome" class="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Digital Outlet</a>
+    <nav class="hidden md:flex gap-8">
+      <a href="#welcome" class="nav-link text-gray-300 hover:text-white">Welcome</a>
+      <a href="#outlet" class="nav-link text-gray-300 hover:text-white">Outlet</a>
+      <a href="#blog" class="nav-link text-gray-300 hover:text-white">Blog</a>
+      <a href="https://hellospaghettibot.github.io/homepage/portfolio1.html" target="_blank" class="nav-link text-gray-300 hover:text-white">Portfolio</a>
+      <a href="#contact" class="nav-link text-gray-300 hover:text-white">Contact</a>
+      <a href="#about" class="nav-link text-gray-300 hover:text-white">About</a>
+    </nav>
+    <button id="mobile-btn" class="md:hidden text-white"><i class="fas fa-bars text-xl"></i></button>
+  </div>
+  <div id="mobile-menu" class="md:hidden hidden px-6 pb-4">
+    <nav class="flex flex-col gap-3">
+      <a href="#welcome" class="nav-link text-gray-300 hover:text-white">Welcome</a>
+      <a href="#outlet" class="nav-link text-gray-300 hover:text-white">Outlet</a>
+      <a href="#blog" class="nav-link text-gray-300 hover:text-white">Blog</a>
+      <a href="https://hellospaghettibot.github.io/homepage/portfolio1.html" target="_blank" class="nav-link text-gray-300 hover:text-white">Portfolio</a>
+      <a href="#contact" class="nav-link text-gray-300 hover:text-white">Contact</a>
+      <a href="#about" class="nav-link text-gray-300 hover:text-white">About</a>
+    </nav>
+  </div>
+</header>
+
+<section id="welcome" class="min-h-screen grid place-items-center text-center px-6">
+  <div>
+    <h1 class="text-5xl md:text-7xl font-extrabold mb-6 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+      Templates, Reviews & Useful Programs
+    </h1>
+    <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+      Clean templates, practical tools, and honest game & tech reviews — updated daily from Gumroad.
+    </p>
+  </div>
+</section>
+
+<section id="outlet" class="py-20 px-6 max-w-7xl mx-auto scroll-mt-28">
+  <div class="text-center mb-10">
+    <h2 class="text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">Digital Outlet</h2>
+    <p class="text-gray-400">Auto-updated daily from Gumroad API.</p>
+  </div>
+  <div id="outlet-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+</section>
+
+<section id="blog" class="py-20 px-6 max-w-7xl mx-auto scroll-mt-28">
+  <div class="text-center mb-10">
+    <h2 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Blog</h2>
+  </div>
+  <iframe src="https://lockedinreviews.blogspot.com/" width="100%" height="800" class="rounded-xl border border-gray-700"></iframe>
+</section>
+
+<section id="contact" class="py-20 px-6 max-w-5xl mx-auto scroll-mt-28 text-center">
+  <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">Contact</h2>
+  <p class="text-gray-400 mb-6">Email: <a href="mailto:ZeroByteKody@proton.me" class="text-blue-400 hover:underline">ZeroByteKody@proton.me</a></p>
+</section>
+
+<section id="about" class="py-20 px-6 max-w-6xl mx-auto scroll-mt-28 text-center">
+  <h2 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">About</h2>
+  <p class="text-gray-400 max-w-3xl mx-auto">
+    Built by Kody (Koza). Digital Outlet curates practical tools, clean templates, and honest reviews — helping creators and gamers ship faster.
+  </p>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const grid = document.getElementById("outlet-grid");
+  fetch("products.json")
+    .then(res => res.json())
+    .then(products => {
+      grid.innerHTML = products.map(p => `
+        <article class="card rounded-xl overflow-hidden">
+          <div class="aspect-square overflow-hidden">
+            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover">
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold clamp-2 mb-2">${p.title}</h3>
+            <a href="${p.url}" target="_blank" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700">View</a>
+          </div>
+        </article>
+      `).join("");
+    })
+    .catch(() => grid.innerHTML = "<p class='text-gray-400'>Could not load products.</p>");
+});
+</script>
+
+</body>
+</html>
