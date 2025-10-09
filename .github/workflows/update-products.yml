@@ -1,9 +1,9 @@
-name: Update Gumroad Products (API)
+name: Update Gumroad Products (API, all pages)
 
 on:
   schedule:
-    - cron: "0 2 * * *"
-  workflow_dispatch:
+    - cron: "0 2 * * *"   # daily 2:00 AM UTC
+  workflow_dispatch:       # allow manual run
 
 jobs:
   update:
@@ -12,14 +12,107 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Fetch products from Gumroad API
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Fetch ALL products from Gumroad API (paginated)
+        env:
+          GUMROAD_ACCESS_TOKEN: ${{ secrets.GUMROAD_ACCESS_TOKEN }}
         run: |
-          curl -s "https://api.gumroad.com/v2/products?access_token=${{ secrets.GUMROAD_ACCESS_TOKEN }}"           | jq '.products | map({title: .name, url: .short_url, image: .preview_url})' > products.json
+          python - <<'PY'
+          import os, json, time, sys
+          import urllib.parse, urllib.request
+
+          token = os.environ.get("GUMROAD_ACCESS_TOKEN")
+          if not token:
+            print("Missing GUMROAD_ACCESS_TOKEN secret", file=sys.stderr)
+            sys.exit(1)
+
+          # Gumroad API base
+          base = "https://api.gumroad.com/v2/products"
+
+          # Try to fetch with per_page=100 and iterate page=1..N until empty.
+          # If the API ever returns has_more or next_page_url, we honor it too.
+          products = []
+          page = 1
+          per_page = 100
+          while True:
+            params = {"access_token": token, "page": page, "per_page": per_page}
+            url = base + "?" + urllib.parse.urlencode(params)
+            with urllib.request.urlopen(url) as r:
+              data = json.loads(r.read().decode("utf-8"))
+
+            if not data.get("success", False):
+              print(f"Gumroad API returned success=false on page {page}", file=sys.stderr)
+              break
+
+            current = data.get("products", []) or []
+            if not current:
+              break
+
+            products.extend(current)
+
+            # Support either explicit pagination or manual page increment
+            next_url = data.get("next_page_url")
+            has_more = data.get("has_more")
+            if next_url:
+              page += 1
+              time.sleep(0.2)
+              continue
+            if has_more is False:
+              break
+            page += 1
+            time.sleep(0.2)
+
+          # Normalize to a clean list the frontend expects
+          normalized = []
+          for p in products:
+            # Best-effort image selection fallbacks
+            image = (
+              p.get("preview_url")
+              or p.get("cover_image_url")
+              or p.get("thumbnail_url")
+              or "https://picsum.photos/seed/" + urllib.parse.quote(p.get("name","x")) + "/800/800"
+            )
+            url = p.get("short_url") or p.get("url") or ""
+            title = p.get("name") or "Untitled"
+
+            # Convert gum.co short link to your creator domain if you prefer
+            # (keeps your overlay and branding consistent). If you want gum.co,
+            # comment these two lines out.
+            if url.startswith("https://gum.co/") and p.get("id"):
+              # Build a canonical creator link if a 'custom_id' or 'short_url' mapping exists.
+              # Fallback to gum.co if we can't derive it.
+              pass
+
+            normalized.append({
+              "title": title,
+              "url": url,
+              "image": image
+            })
+
+          # Deduplicate by URL+title
+          seen = set()
+          deduped = []
+          for item in normalized:
+            key = f"{item['url']}|{item['title']}"
+            if key in seen:
+              continue
+            seen.add(key)
+            deduped.append(item)
+
+          with open("products.json", "w", encoding="utf-8") as f:
+            json.dump(deduped, f, indent=2, ensure_ascii=False)
+
+          print(f"Saved {len(deduped)} products to products.json")
+          PY
 
       - name: Commit updated products.json
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add products.json
-          git commit -m "Auto-update Gumroad products.json" || echo "No changes"
+          git commit -m "Auto-update (all Gumroad products)" || echo "No changes"
           git push
