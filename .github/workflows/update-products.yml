@@ -1,118 +1,145 @@
-name: Update Gumroad Products (API, all pages)
-
-on:
-  schedule:
-    - cron: "0 2 * * *"   # daily 2:00 AM UTC
-  workflow_dispatch:       # allow manual run
-
-jobs:
-  update:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Fetch ALL products from Gumroad API (paginated)
+      - name: Fetch ALL products from Gumroad API (resilient, paginated, with image candidates)
         env:
           GUMROAD_ACCESS_TOKEN: ${{ secrets.GUMROAD_ACCESS_TOKEN }}
         run: |
           python - <<'PY'
-          import os, json, time, sys
-          import urllib.parse, urllib.request
+          import os, json, time, sys, random
+          from urllib import request, parse, error
 
-          token = os.environ.get("GUMROAD_ACCESS_TOKEN")
-          if not token:
-            print("Missing GUMROAD_ACCESS_TOKEN secret", file=sys.stderr)
-            sys.exit(1)
+          TOKEN = os.environ.get("GUMROAD_ACCESS_TOKEN")
+          if not TOKEN:
+              print("ERROR: Missing GUMROAD_ACCESS_TOKEN", file=sys.stderr)
+              sys.exit(1)
 
-          # Gumroad API base
-          base = "https://api.gumroad.com/v2/products"
+          BASE = "https://api.gumroad.com/v2/products"
+          UA   = "DigitalOutletSync/1.0 (+https://github.com/your-repo) GitHubActions"
 
-          # Try to fetch with per_page=100 and iterate page=1..N until empty.
-          # If the API ever returns has_more or next_page_url, we honor it too.
-          products = []
-          page = 1
-          per_page = 100
-          while True:
-            params = {"access_token": token, "page": page, "per_page": per_page}
-            url = base + "?" + urllib.parse.urlencode(params)
-            with urllib.request.urlopen(url) as r:
-              data = json.loads(r.read().decode("utf-8"))
+          # -------- HTTP helpers with retry/backoff --------
+          def http_get(url, max_attempts=8, base_delay=1.5, timeout=45):
+              """
+              GET with exponential backoff + jitter.
+              Retries on 5xx, 504, 429, and network errors. Honors Retry-After if present.
+              """
+              last_err = None
+              for attempt in range(1, max_attempts + 1):
+                  req = request.Request(url, headers={
+                      "User-Agent": UA,
+                      "Accept": "application/json"
+                  })
+                  try:
+                      with request.urlopen(req, timeout=timeout) as resp:
+                          data = resp.read().decode("utf-8")
+                          return json.loads(data)
+                  except error.HTTPError as e:
+                      # Handle rate limit or server errors
+                      code = e.code
+                      if code in (429, 500, 502, 503, 504):
+                          retry_after = e.headers.get("Retry-After")
+                          if retry_after:
+                              try:
+                                  delay = float(retry_after)
+                              except:
+                                  delay = base_delay * attempt
+                          else:
+                              # exponential backoff + jitter
+                              delay = base_delay * (2 ** (attempt - 1)) + random.uniform(0, 0.75)
+                          print(f"[WARN] HTTP {code} on attempt {attempt}/{max_attempts}; sleeping {delay:.1f}s")
+                          time.sleep(delay)
+                          last_err = e
+                          continue
+                      # Non-retryable HTTP error
+                      print(f"[ERROR] HTTP {code} {e.reason} for {url}", file=sys.stderr)
+                      raise
+                  except error.URLError as e:
+                      # Network hiccup; retry with backoff
+                      delay = base_delay * (2 ** (attempt - 1)) + random.uniform(0, 0.75)
+                      print(f"[WARN] Network error on attempt {attempt}/{max_attempts}: {e}; sleeping {delay:.1f}s")
+                      time.sleep(delay)
+                      last_err = e
+                      continue
+                  except Exception as e:
+                      # Unknown; retry a few times anyway
+                      delay = base_delay * (2 ** (attempt - 1)) + random.uniform(0, 0.75)
+                      print(f"[WARN] Unexpected error on attempt {attempt}/{max_attempts}: {e}; sleeping {delay:.1f}s")
+                      time.sleep(delay)
+                      last_err = e
+                      continue
+              # exhausted
+              print("[ERROR] Exhausted retries", file=sys.stderr)
+              if last_err:
+                  raise last_err
+              raise RuntimeError("Unknown GET failure")
 
-            if not data.get("success", False):
-              print(f"Gumroad API returned success=false on page {page}", file=sys.stderr)
-              break
+          # -------- Pull all pages safely --------
+          all_items = []
+          seen_ids  = set()
+          page      = 1
+          PER_PAGE  = 100
+          HARD_CAP  = 200  # safety valve to avoid infinite loops
 
-            current = data.get("products", []) or []
-            if not current:
-              break
+          while page <= HARD_CAP:
+              params = {"access_token": TOKEN, "page": page, "per_page": PER_PAGE}
+              url = BASE + "?" + parse.urlencode(params)
+              data = http_get(url)
 
-            products.extend(current)
+              if not data.get("success"):
+                  print(f"[WARN] API returned success=false on page {page}")
+                  break
 
-            # Support either explicit pagination or manual page increment
-            next_url = data.get("next_page_url")
-            has_more = data.get("has_more")
-            if next_url:
+              chunk = data.get("products") or []
+              if not chunk:
+                  print(f"Page {page}: empty -> stop")
+                  break
+
+              # keep only new IDs — prevents looping when 'page' is ignored
+              new = [p for p in chunk if p.get("id") not in seen_ids]
+              for p in new:
+                  seen_ids.add(p["id"])
+                  all_items.append(p)
+
+              print(f"Page {page}: {len(chunk)} items, {len(new)} new, total unique {len(all_items)}")
+
+              if not new:
+                  print("No new items on this page -> stop (pagination likely ignored).")
+                  break
+
+              if data.get("has_more") is False:
+                  print("has_more = false -> stop")
+                  break
+
               page += 1
+              # light pacing to be nice to API
               time.sleep(0.2)
-              continue
-            if has_more is False:
-              break
-            page += 1
-            time.sleep(0.2)
 
-          # Normalize to a clean list the frontend expects
-          normalized = []
-          for p in products:
-            # Best-effort image selection fallbacks
-            image = (
-              p.get("preview_url")
-              or p.get("cover_image_url")
-              or p.get("thumbnail_url")
-              or "https://picsum.photos/seed/" + urllib.parse.quote(p.get("name","x")) + "/800/800"
-            )
-            url = p.get("short_url") or p.get("url") or ""
-            title = p.get("name") or "Untitled"
+          # -------- Normalize -> include multiple image candidates --------
+          out = []
+          for p in all_items:
+              title = p.get("name") or "Untitled"
+              url   = p.get("short_url") or p.get("url") or ""
+              imgs  = []
+              for key in ("preview_url", "cover_image_url", "thumbnail_url"):
+                  v = p.get(key)
+                  if v and v not in imgs:
+                      imgs.append(v)
+              if not imgs:
+                  # stable placeholder seeded by title
+                  seed = parse.quote(title)
+                  imgs.append(f"https://picsum.photos/seed/{seed}/800/800")
 
-            # Convert gum.co short link to your creator domain if you prefer
-            # (keeps your overlay and branding consistent). If you want gum.co,
-            # comment these two lines out.
-            if url.startswith("https://gum.co/") and p.get("id"):
-              # Build a canonical creator link if a 'custom_id' or 'short_url' mapping exists.
-              # Fallback to gum.co if we can't derive it.
-              pass
+              out.append({"title": title, "url": url, "images": imgs})
 
-            normalized.append({
-              "title": title,
-              "url": url,
-              "image": image
-            })
-
-          # Deduplicate by URL+title
+          # Deduplicate conservatively by (url, title)
           seen = set()
-          deduped = []
-          for item in normalized:
-            key = f"{item['url']}|{item['title']}"
-            if key in seen:
-              continue
-            seen.add(key)
-            deduped.append(item)
+          dedup = []
+          for item in out:
+              key = (item["url"], item["title"])
+              if key in seen: 
+                  continue
+              seen.add(key)
+              dedup.append(item)
 
           with open("products.json", "w", encoding="utf-8") as f:
-            json.dump(deduped, f, indent=2, ensure_ascii=False)
+              json.dump(dedup, f, indent=2, ensure_ascii=False)
 
-          print(f"Saved {len(deduped)} products to products.json")
+          print(f"✅ Saved {len(dedup)} products to products.json")
           PY
-
-      - name: Commit updated products.json
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add products.json
-          git commit -m "Auto-update (all Gumroad products)" || echo "No changes"
-          git push
