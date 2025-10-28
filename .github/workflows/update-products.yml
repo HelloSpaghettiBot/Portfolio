@@ -1,4 +1,4 @@
-      - name: Fetch ALL products from Gumroad API (resilient, paginated, with image candidates)
+name: Fetch ALL products from Gumroad API (resilient, paginated, with image candidates)
         env:
           GUMROAD_ACCESS_TOKEN: ${{ secrets.GUMROAD_ACCESS_TOKEN }}
         run: |
